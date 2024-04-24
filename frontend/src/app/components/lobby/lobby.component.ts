@@ -16,4 +16,8 @@ export class LobbyComponent implements OnInit {
     const uuid = uuidv4();
     this.router.navigate(['/game', uuid]);
   }
+
+  joinGame(){
+    console.log('join the game');
+  }
 }
