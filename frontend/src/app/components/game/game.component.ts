@@ -23,7 +23,7 @@ export class GameComponent implements OnInit {
     if(this.route.snapshot.paramMap.get('id')) 
       this.gameId = this.route.snapshot.paramMap.get('id');
     
-      this.socketIoService.connect(this.gameId);
+    this.socketIoService.connect(this.gameId);
     this.recieveJoinedPlayers();
     this.recieveStartGame();
     this.recieveGameUpdate();
@@ -40,6 +40,14 @@ export class GameComponent implements OnInit {
   clickWord(word: any) {
     word.selected = true;
     this.socketIoService.sendGameUpdate(this.gameId, this.words);
+  }
+
+  copyToClipboard(gameId: string | null) {
+    if (gameId == null) return;
+    navigator.clipboard.writeText(gameId);
+    this.snackbar.open('Link copied to clipboard', '', {
+      duration: 3000,
+    });
   }
 
   recieveJoinedPlayers() {

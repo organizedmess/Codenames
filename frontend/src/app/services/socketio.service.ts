@@ -14,7 +14,7 @@ export class SocketioService {
 
   connect(gameId: string | null) {
     this.socket = io(environment.SOCKET_ENDPOINT);
-    this.socket.emit('joinGame', { gameId: gameId });
+    this.socket.emit('creategame', { gameId: gameId });
   }
 
   startGame(gameId : string | null) {
@@ -27,7 +27,7 @@ export class SocketioService {
 
   recieveJoinedPlayers() {
     return new Observable((observer) => {
-      this.socket.on('joinGame', (message) => {
+      this.socket.on('creategame', (message) => {
         observer.next(message);
       });
     });

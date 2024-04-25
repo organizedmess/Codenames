@@ -32,10 +32,10 @@ io.on('connection', (socket)=>{
         });
     });
 
-    socket.on('joinGame', ({gameId})=>{
+    socket.on('creategame', ({gameId})=>{
         socket.join(gameId);
         
-        socket.emit('joinGame', `You have joined the game using ID: ${gameId}`); 
+        socket.emit('creategame', `You have created the game with ID: ${gameId}`); 
     });
 
     socket.on('gameUpdate', ({gameId, words})=>{
