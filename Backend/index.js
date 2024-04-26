@@ -15,7 +15,7 @@ io.on('connection', (socket)=>{
     console.log('User is connected');
     
     socket.on('startGame', ({gameId})=>{
-        if(rooms[gameId].length > 0){
+        if(rooms[gameId] && rooms[gameId].length > 0){
             return io.to(gameId).emit('startGame', rooms[gameId])
         }
         createGame().then(words => {
@@ -46,7 +46,8 @@ io.on('connection', (socket)=>{
     });
 
     socket.on('gameUpdate', ({gameId, words})=>{
-        console.log('Game Update:', words)
+        rooms[gameId] = words;
+        console.log('gameUpdate', words)
         io.to(gameId).emit('gameUpdate', words);
     });
 

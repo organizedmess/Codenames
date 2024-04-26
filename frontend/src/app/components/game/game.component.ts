@@ -12,7 +12,7 @@ export class GameComponent implements OnInit {
   gameId: string | null = null;
   mode: string | null = null;
   role = 'operative';
-  words:any ;
+  words: any;
 
   constructor(
     private socketIoService: SocketioService,
@@ -88,6 +88,7 @@ export class GameComponent implements OnInit {
 
   recieveGameUpdate() {
     this.socketIoService.recieveGameUpdate(this.gameId).subscribe((words) => {
+      console.log(words);
       this.words = words;
     });
   }

@@ -60,10 +60,11 @@ export class SocketioService {
   }
 
   recieveGameUpdate(gameId : string | null) {
-    if(gameId == null) return new Observable((observer) => {});
+    if(gameId === null) return new Observable((observer) => {});
     return new Observable((observer) => {
-      this.socket.on(gameId, (words) => {
-        observer.next(words);
+      this.socket.on('gameUpdate', (words) => {
+        console.log('recieveGameUpdate');
+        observer.next(words); 
       });
     });
   }
