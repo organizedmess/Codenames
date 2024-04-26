@@ -1,6 +1,9 @@
-<div class="box">
-  <button mat-raised-button class="btn btn-primary" (click)="joinGame()">Join game</button>  
-</div>
-<div class="box">
-  <button mat-raised-button (click)="createGame()">Create game</button>
+<div class="d-flex justify-content-around align-items-center">
+  <div class="box">
+    <button mat-raised-button class="btn btn-primary" (click)="joinGame()">Join game</button>  
+    <input matInput placeholder="Game ID" [(ngModel)]="gameId" />
+  </div>
+  <div class="box">
+    <button mat-raised-button (click)="createGame()">Create game</button>
+  </div>
 </div>

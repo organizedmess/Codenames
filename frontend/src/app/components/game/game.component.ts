@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class GameComponent implements OnInit {
   gameId: string | null = null;
+  mode: string | null = null;
   role = 'operative';
   words:any ;
 
@@ -20,10 +21,15 @@ export class GameComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if(this.route.snapshot.paramMap.get('id')) 
-      this.gameId = this.route.snapshot.paramMap.get('id');
+      
+    this.gameId = this.route.snapshot.paramMap.get('id');
+    this.mode = this.route.snapshot.paramMap.get('mode');
+    this.socketIoService.connect(this.gameId, this.mode);
+
+    if(this.mode === 'join-game')
+      this.joinGame();
     
-    this.socketIoService.connect(this.gameId);
+    this.recieveCreateGameAck();
     this.recieveJoinedPlayers();
     this.recieveStartGame();
     this.recieveGameUpdate();
@@ -37,6 +43,10 @@ export class GameComponent implements OnInit {
     this.socketIoService.startGame(this.gameId);
   }
 
+  joinGame(){
+    this.socketIoService.joinGame(this.gameId);
+  }
+
   clickWord(word: any) {
     word.selected = true;
     this.socketIoService.sendGameUpdate(this.gameId, this.words);
@@ -44,9 +54,20 @@ export class GameComponent implements OnInit {
 
   copyToClipboard(gameId: string | null) {
     if (gameId == null) return;
+    
+    gameId = gameId.trim();
     navigator.clipboard.writeText(gameId);
+
     this.snackbar.open('Link copied to clipboard', '', {
       duration: 3000,
+    });
+  }
+
+  recieveCreateGameAck() {
+    this.socketIoService.recieveCreateGameAck().subscribe((message: any) => {
+      this.snackbar.open(message, '', {
+        duration: 3000,
+      });
     });
   }
 

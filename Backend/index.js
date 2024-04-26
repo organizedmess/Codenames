@@ -15,8 +15,7 @@ io.on('connection', (socket)=>{
     console.log('User is connected');
     
     socket.on('startGame', ({gameId})=>{
-        
-        if(rooms[gameId]){
+        if(rooms[gameId].length > 0){
             return io.to(gameId).emit('startGame', rooms[gameId])
         }
         createGame().then(words => {
@@ -34,8 +33,16 @@ io.on('connection', (socket)=>{
 
     socket.on('creategame', ({gameId})=>{
         socket.join(gameId);
-        
+        rooms[gameId] = [];
         socket.emit('creategame', `You have created the game with ID: ${gameId}`); 
+    });
+
+    socket.on('joingame', ({gameId})=>{
+        if(!rooms[gameId])
+            return socket.emit('joingame', `Game with ID: ${gameId} does not exist`);
+        
+        socket.join(gameId);
+        socket.emit('joingame', `You have joined the game with ID: ${gameId}`);
     });
 
     socket.on('gameUpdate', ({gameId, words})=>{

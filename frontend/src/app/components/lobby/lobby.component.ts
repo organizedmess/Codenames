@@ -8,16 +8,19 @@ import { v4 as uuidv4 } from 'uuid';
   styleUrls: ['./lobby.component.css'],
 })
 export class LobbyComponent implements OnInit {
+  gameId: string | null = null;
+
   constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
   createGame() {
     const uuid = uuidv4();
-    this.router.navigate(['/game', uuid]);
+    this.router.navigate(['/game', 'create-game', uuid]);
   }
 
   joinGame(){
+    this.router.navigate(['/game', 'join-game', this.gameId]);
     console.log('join the game');
   }
 }

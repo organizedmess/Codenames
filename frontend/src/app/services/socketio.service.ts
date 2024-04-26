@@ -12,9 +12,14 @@ export class SocketioService {
 
   constructor() {}
 
-  connect(gameId: string | null) {
+  connect(gameId: string | null, mode: string | null) {
+    if(!gameId || !mode) return;
     this.socket = io(environment.SOCKET_ENDPOINT);
-    this.socket.emit('creategame', { gameId: gameId });
+    if(mode === 'create-game'){
+      this.socket.emit('creategame', { gameId: gameId });
+    } 
+    
+    return ;
   }
 
   startGame(gameId : string | null) {
@@ -25,7 +30,19 @@ export class SocketioService {
     this.socket.emit('gameUpdate', { gameId: gameId, words: words });
   }
 
+  joinGame(gameId: string | null) {
+    this.socket.emit('joingame', { gameId: gameId });
+  }
+
   recieveJoinedPlayers() {
+    return new Observable((observer) => {
+      this.socket.on('joingame', (message) => {
+        observer.next(message);
+      });
+    });
+  }
+
+  recieveCreateGameAck(){
     return new Observable((observer) => {
       this.socket.on('creategame', (message) => {
         observer.next(message);
@@ -36,6 +53,7 @@ export class SocketioService {
   recieveStartGame() {
     return new Observable((observer) => {
       this.socket.on('startGame', (words) => {
+        console.log(words)
         observer.next(words);
       });
     });
