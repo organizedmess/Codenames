@@ -14,6 +14,11 @@ export class GameComponent implements OnInit {
   role = 'operative';
   words: any;
 
+  
+
+  blueScore: number = 0;
+  redScore: number = 0;
+
   constructor(
     private socketIoService: SocketioService,
     private route: ActivatedRoute,
@@ -48,6 +53,16 @@ export class GameComponent implements OnInit {
   }
 
   clickWord(word: any) {
+    let clickedWordColor = word.color;
+
+    if(clickedWordColor === 'blue'){
+      this.blueScore++;
+    }
+    else if(clickedWordColor === 'red'){
+      this.redScore++;
+    }
+
+    this.updateScoreBoard();
     word.selected = true;
     this.socketIoService.sendGameUpdate(this.gameId, this.words);
   }
@@ -92,4 +107,16 @@ export class GameComponent implements OnInit {
       this.words = words;
     });
   }
+
+  updateScoreBoard(){
+    this.socketIoService.updateBoard(this.blueScore, this.redScore, this.gameId);
+  }
+
+  recieveUpdateBoard() {
+    this.socketIoService.recieveUpdateBoard().subscribe((message: any) => {
+      this.blueScore = message.blueScore;
+      this.redScore = message.redScore;
+    });
+  }
+
 }

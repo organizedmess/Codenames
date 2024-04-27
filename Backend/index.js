@@ -51,6 +51,10 @@ io.on('connection', (socket)=>{
         io.to(gameId).emit('gameUpdate', words);
     });
 
+    socket.on('updateBoard', ({blueScore, redScore, gameId}) => {
+        io.to(gameId).emit('updateBoard', {blueScore, redScore});
+    })
+
     socket.on('error', (error) => {
         console.error('Socket error:', error);
     });

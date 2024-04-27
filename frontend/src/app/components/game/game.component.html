@@ -1,3 +1,16 @@
+
+<div class="center scoreboard d-flex flex-column">
+  
+  <div class="bluescore-board bg-primary">
+    <span class="score">Blue: {{ blueScore }}</span>
+  </div>
+
+  <div class="redscore-board bg-danger">
+    <span class="score">Red: {{ redScore }}</span>
+  </div>
+
+</div>
+
 <div class="game">
   <div class="center" *ngIf="!words">
     <button mat-raised-button (click)="startGame()">Start game</button>

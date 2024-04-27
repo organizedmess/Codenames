@@ -68,4 +68,18 @@ export class SocketioService {
       });
     });
   }
+
+  updateBoard(blueScore: number, redScore: number, gameId: string | null){
+    if(!gameId) return;
+    this.socket.emit('updateBoard', { blueScore: blueScore, redScore: redScore, gameId: gameId });
+  }
+
+  recieveUpdateBoard() {
+    return new Observable((observer) => {
+      this.socket.on('updateBoard', (data) => {
+        observer.next(data);
+      });
+    });
+  }
+
 }
