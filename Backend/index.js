@@ -52,7 +52,6 @@ io.on('connection', (socket)=>{
         });
 
         clients = allotTeams(clients) 
-        console.log(clients);
         io.to(gameId).emit('allotTeams', clients[socket.id]);
     });
 

@@ -25,10 +25,9 @@ export class SocketioService {
   }
 
   startGame(gameId : string | null) {
-    // if(this.gameAlreadyStarted){
-    //   alert('You cant join room when the game has already started');
-    // }
-    this.gameAlreadyStarted = true;
+    if(this.gameAlreadyStarted){
+      alert('You cant join room when the game has already started');
+    }
     this.socket.emit('startGame', { gameId: gameId });
   }
 
@@ -63,12 +62,12 @@ export class SocketioService {
   recieveStartGame() {
     return new Observable((observer) => {
       this.socket.on('startGame', (words) => {
+        this.gameAlreadyStarted = true;
         observer.next(words);
       });
     });
   }
   
-
   recieveGameUpdate(gameId : string | null) {
     if(gameId === null) return new Observable((observer) => {});
     return new Observable((observer) => {
@@ -93,5 +92,7 @@ export class SocketioService {
       });
     });
   }
+
+
 
 }
