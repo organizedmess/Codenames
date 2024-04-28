@@ -9,6 +9,19 @@
     <span class="score">Red: {{ redScore }}</span>
   </div>
 
+  <div class="curr-team">
+    <span class="team" >Current team: {{ currTeam }}</span>
+  </div>
+
+</div>
+
+<div class="ack">
+  <div class="flex flex-column">
+    <span [ngClass]="winner === 'BLUE' ? 'blueWon' : 'redWon'" >{{ winner }} Team has won the game! </span>
+    <button mat-raised-button (click)="nextGame()" class="btn btn-primary nextgame" *ngIf="words">
+      Next game
+    </button>
+  </div>
 </div>
 
 <div class="game">

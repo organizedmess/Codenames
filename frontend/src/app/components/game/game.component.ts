@@ -14,7 +14,8 @@ export class GameComponent implements OnInit {
   role = 'operative';
   words: any;
 
-  
+  currTeam = 'blue';
+  winner: string = '';
 
   blueScore: number = 0;
   redScore: number = 0;
@@ -41,7 +42,18 @@ export class GameComponent implements OnInit {
   }
 
   nextGame() {
-    this.socketIoService.startGame(this.gameId);
+    this.blueScore = 0;
+    this.redScore = 0;
+    this.winner = '';
+    this.currTeam = 'blue';
+
+    let gameBoard = document.querySelector('.game') as HTMLElement;
+    gameBoard.style.display = 'block';
+
+    let element = document.querySelector('.ack') as HTMLElement;
+    element.style.display = 'none';
+  
+    this.socketIoService.nextGame(this.gameId);
   }
 
   startGame() {
@@ -61,10 +73,9 @@ export class GameComponent implements OnInit {
     else if(clickedWordColor === 'red'){
       this.redScore++;
     }
-
-    this.updateScoreBoard();
     word.selected = true;
     this.socketIoService.sendGameUpdate(this.gameId, this.words);
+    this.currTeam = this.currTeam === 'blue' ? 'red' : 'blue';
   }
 
   copyToClipboard(gameId: string | null) {
@@ -103,20 +114,58 @@ export class GameComponent implements OnInit {
 
   recieveGameUpdate() {
     this.socketIoService.recieveGameUpdate(this.gameId).subscribe((words) => {
-      console.log(words);
       this.words = words;
+      this.updateScoreBoard(this.words);
     });
   }
 
-  updateScoreBoard(){
-    this.socketIoService.updateBoard(this.blueScore, this.redScore, this.gameId);
+  updateScoreBoard(words: any) {
+
+    let blueScore = 0;
+    let redScore = 0;
+
+    for(let i = 0; i < words.length; i++){
+      if(words[i].selected){
+        if(words[i].color === 'blue'){
+          blueScore++;
+        }
+        else if(words[i].color === 'red'){
+          redScore++;
+        }
+        else if(words[i].color === 'black' ){
+          if(this.currTeam === 'blue'){
+            this.winner = 'blue';
+          }
+          else{
+            this.winner = 'red';
+          }
+          this.winner = this.winner.toUpperCase();
+          this.showResultCard(this.winner);
+          return ;
+        }
+      }
+
+      this.blueScore = blueScore;
+      this.redScore = redScore;
+
+      if(blueScore === 8){
+        this.winner = 'blue';
+      }
+      else if(redScore === 9){
+        this.winner = 'red';
+      }
+    }
+
   }
 
-  recieveUpdateBoard() {
-    this.socketIoService.recieveUpdateBoard().subscribe((message: any) => {
-      this.blueScore = message.blueScore;
-      this.redScore = message.redScore;
-    });
+  showResultCard(winner: string) {
+    let gameBoard = document.querySelector('.game') as HTMLElement;
+    gameBoard.style.display = 'none';
+
+
+    let element = document.querySelector('.ack') as HTMLElement;
+    element.style.display = 'block';
+    return ;
   }
 
 }

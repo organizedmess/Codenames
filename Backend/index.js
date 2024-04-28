@@ -3,6 +3,7 @@ const app = require('express');
 const httpServer = require('http').createServer(app);
 
 const { createGame } = require('./words'); // important to import the function from words.js
+const e = require('express');
 
 const io = require('socket.io')(httpServer, {
     cors: true,
@@ -47,13 +48,8 @@ io.on('connection', (socket)=>{
 
     socket.on('gameUpdate', ({gameId, words})=>{
         rooms[gameId] = words;
-        console.log('gameUpdate', words)
         io.to(gameId).emit('gameUpdate', words);
     });
-
-    socket.on('updateBoard', ({blueScore, redScore, gameId}) => {
-        io.to(gameId).emit('updateBoard', {blueScore, redScore});
-    })
 
     socket.on('error', (error) => {
         console.error('Socket error:', error);

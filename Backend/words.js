@@ -1,4 +1,80 @@
-let words = ["success",
+const { response } = require("express");
+
+const http = require("http");
+
+let words = [];
+
+{
+// http.get('http://random-word-api.herokuapp.com/word?number=25', (resp) => {
+//     let data = '';
+
+//     resp.on('data', (chunk) => {
+//         data += chunk;
+//     });
+
+//     resp.on('end', () => {
+//         console.log(JSON.parse(data));
+//         words = JSON.parse(data);
+//     });
+
+// }).on("error", (err) => {
+//     console.log("Error: " + err.message);
+//     words = ["success",
+//     "appointment",
+//     "administration",
+//     "procedure",
+//     "situation",
+//     "food",
+//     "advice",
+//     "emphasis",
+//     "vehicle",
+//     "education",
+//     "writing",
+//     "gate",
+//     "dinner",
+//     "independence",
+//     "ratio",
+//     "wife",
+//     "possession",
+//     "alcohol",
+//     "love",
+//     "university",
+//     "importance",
+//     "committee",
+//     "decision",
+//     "session",
+//     "thanks",
+//     "replacement",
+//     "fortune",
+//     "sister",
+//     "article",
+//     "studio",
+//     "reputation",
+//     "math",
+//     "percentage",
+//     "heart",
+//     "topic",
+//     "desk",
+//     "interaction",
+//     "homework",
+//     "grandmother",
+//     "cell",
+//     "reaction",
+//     "combination",
+//     "indication",
+//     "baseball",
+//     "currency",
+//     "cigarette",
+//     "client",
+//     "discussion",
+//     "breath",
+//     "actor"
+//     ];
+// });  
+}
+
+
+words = ["success",
     "appointment",
     "administration",
     "procedure",
@@ -49,7 +125,7 @@ let words = ["success",
     "breath",
     "actor"
 ];
-  
+
 function createGame() {
 
     return new Promise(function (resolve, reject) {

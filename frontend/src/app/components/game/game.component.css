@@ -8,6 +8,23 @@
   justify-content: center;
 }
 
+.ack{
+  display: none;
+  position: absolute;
+  top: 40%;
+  left: 42%;
+}
+
+.ack > div{
+  display: flex;
+  gap: 10px;
+  font-size: 1.5em;
+  color: #f7f7f7;
+  background-color: #333;
+  padding: 10px;
+  border-radius: 10px;
+}
+
 .flex-container {
   display: flex;
   flex-direction: row;
@@ -25,4 +42,17 @@
 
 .nextgame {
   float: right;
+  border: 1px solid #ddd;
+  background-color: rgb(155, 255, 155);
+}
+
+.blueWon{
+  background-color: rgb(72, 72, 255);
+  color: white;
+  
+}
+
+.redWon{
+  background-color: rgb(255, 107, 107);
+  color: white
 }
