@@ -20,6 +20,9 @@ export class GameComponent implements OnInit {
   blueScore: number = 0;
   redScore: number = 0;
 
+  clientAnimal: any;
+  yourAnimal: any;
+
   constructor(
     private socketIoService: SocketioService,
     private route: ActivatedRoute,
@@ -39,6 +42,7 @@ export class GameComponent implements OnInit {
     this.recieveJoinedPlayers();
     this.recieveStartGame();
     this.recieveGameUpdate();
+    this.AssignAnimal();
   }
 
   nextGame() {
@@ -168,4 +172,12 @@ export class GameComponent implements OnInit {
     return ;
   }
 
+  AssignAnimal() {
+    this.socketIoService.AssignAnimal().subscribe((data: any) => {
+      this.clientAnimal = data.clients
+      this.yourAnimal = data.yourAnimal;
+    });
+  }
+
+  
 }

@@ -72,4 +72,12 @@ export class SocketioService {
     });
   }
 
+  AssignAnimal() {
+    return new Observable((observer) => {
+      this.socket.on('assignAnimal', (data) => {
+        observer.next(data);
+      });
+    });
+  }
+
 }

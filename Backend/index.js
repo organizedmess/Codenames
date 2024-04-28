@@ -11,10 +11,32 @@ const io = require('socket.io')(httpServer, {
 });
 
 
+const animals = [
+    {name: 'dog', icon: '../assets/dog.png'},
+    {name: 'cat', icon: '../assets/cat.png'},
+    {name: 'elephant', icon: '../assets/elephant.png'},
+    {name: 'lion', icon: '../assets/lion.png'},
+    {name: 'tiger', icon: '../assets/tiger.png'},
+    {name: 'bear', icon: '../assets/bear.png'},
+    {name: 'wolf', icon: '../assets/wolf.png'},
+    {name: 'fox', icon: '../assets/fox.png'},
+    {name: 'deer', icon: '../assets/deer.png'},
+    {name: 'rabbit', icon: '../assets/rabbit.png'},
+    {name: 'horse', icon: '../assets/horse.png'},
+    {name: 'cow', icon: '../assets/cow.png'},
+    {name: 'pig', icon: '../assets/pig.png'}
+]
+
+clients = {};
 rooms = [];
 io.on('connection', (socket)=>{
-    console.log('User is connected');
+    console.log('User connected', socket.id);
     
+    const animal = animals[Math.floor(Math.random() * animals.length)];
+    animals.splice(animals.indexOf(animal), 1);
+    clients[socket.id] = animal;
+    socket.emit('assignAnimal', {clients: clients, animal: animal});
+
     socket.on('startGame', ({gameId})=>{
         if(rooms[gameId] && rooms[gameId].length > 0){
             return io.to(gameId).emit('startGame', rooms[gameId])
@@ -49,6 +71,13 @@ io.on('connection', (socket)=>{
     socket.on('gameUpdate', ({gameId, words})=>{
         rooms[gameId] = words;
         io.to(gameId).emit('gameUpdate', words);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('User disconnected', socket.id);
+        const animal = clients[socket.id];
+        animals.push(animal);
+        delete clients[socket.id];
     });
 
     socket.on('error', (error) => {
