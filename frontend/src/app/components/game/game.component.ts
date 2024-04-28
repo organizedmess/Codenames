@@ -11,17 +11,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class GameComponent implements OnInit {
   gameId: string | null = null;
   mode: string | null = null;
-  role = 'operative';
   words: any;
-
+  
   currTeam = 'blue';
   winner: string = '';
-
+  
   blueScore: number = 0;
   redScore: number = 0;
-
+  
   clientAnimal: any;
   yourAnimal: any;
+  role = 'operative';
+  yourTeam: any;
 
   constructor(
     private socketIoService: SocketioService,
@@ -179,5 +180,11 @@ export class GameComponent implements OnInit {
     });
   }
 
-  
+  allotTeamsandRole() {
+    this.socketIoService.allotTeamsandRole().subscribe((data: any) => {
+      this.role = data.role;
+      this.yourTeam = data.team;
+    });
+  }
+
 }

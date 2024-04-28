@@ -2,13 +2,14 @@ const app = require('express');
 
 const httpServer = require('http').createServer(app);
 
-const { createGame } = require('./words'); // important to import the function from words.js
+const { createGame, allotTeams } = require('./words'); // important to import the function from words.js
 const e = require('express');
 
 const io = require('socket.io')(httpServer, {
     cors: true,
     origins: ["*"]  
 });
+
 
 
 const animals = [
@@ -27,16 +28,20 @@ const animals = [
     {name: 'pig', icon: '../assets/pig.png'}
 ]
 
-clients = {};
+clients = {
+    // socket.id: {animal:, team: }
+};
 rooms = [];
 io.on('connection', (socket)=>{
     console.log('User connected', socket.id);
-    
+    clients[socket.id] = {animal: '', team: '', role: ''};
+
     const animal = animals[Math.floor(Math.random() * animals.length)];
     animals.splice(animals.indexOf(animal), 1);
-    clients[socket.id] = animal;
-    socket.emit('assignAnimal', {clients: clients, animal: animal});
+    clients[socket.id].animal = animal;
 
+    socket.emit('assignAnimal', {clients: clients, animal: animal});
+    
     socket.on('startGame', ({gameId})=>{
         if(rooms[gameId] && rooms[gameId].length > 0){
             return io.to(gameId).emit('startGame', rooms[gameId])
@@ -45,6 +50,10 @@ io.on('connection', (socket)=>{
             rooms[gameId] = words;
             io.to(gameId).emit('startGame', words);
         });
+
+        clients = allotTeams(clients) 
+        console.log(clients);
+        io.to(gameId).emit('allotTeams', clients[socket.id]);
     });
 
     socket.on('nextGame', ({gameId})=>{
@@ -52,6 +61,9 @@ io.on('connection', (socket)=>{
             rooms[gameId] = words;
             io.to(gameId).emit('startGame', words);
         });
+        clients = allotTeams(clients) 
+        console.log(clients[socket.id]);
+        io.to(gameId).emit('allotTeams', clients[socket.id]);
     });
 
     socket.on('creategame', ({gameId})=>{
@@ -78,6 +90,9 @@ io.on('connection', (socket)=>{
         const animal = clients[socket.id];
         animals.push(animal);
         delete clients[socket.id];
+
+        socket.emit('assignAnimal', {clients: clients, animal: animal});
+
     });
 
     socket.on('error', (error) => {

@@ -73,6 +73,71 @@ let words = [];
 // });  
 }
 
+let redTeam = [];
+let blueTeam = [];
+function allotTeams(clients) {  
+    let count = 0;
+    for (var key in clients) {
+        if (clients.hasOwnProperty(key)) {
+            if(count % 2 == 0){
+                clients[key].team = "red";
+            }
+            else{
+                clients[key].team = "blue";
+
+            }
+            count++;
+        }
+    }
+    assignRoles(clients);
+    return clients;
+}
+
+
+function assignRoles(clients) {
+    let redTeam = [];
+    let blueTeam = [];
+  
+    // Separate the clients into two arrays based on their team
+    for (let key in clients) {
+      if (clients.hasOwnProperty(key)) {
+        if (clients[key].team === 'red') {
+          redTeam.push(clients[key]);
+        } else if (clients[key].team === 'blue') {
+          blueTeam.push(clients[key]);
+        }
+      }
+    }
+  
+    // Shuffle each array
+    redTeam = shuffle(redTeam);
+    blueTeam = shuffle(blueTeam);
+  
+    // Assign roles
+    assignRoleToTeam(redTeam);
+    assignRoleToTeam(blueTeam);
+  
+    return clients;
+  }
+  
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+  
+  function assignRoleToTeam(team) {
+    for (let i = 0; i < team.length; i++) {
+      if (i === 0) {
+        team[i].role = 'spymaster';
+      } else {
+        team[i].role = 'operative';
+      }
+    }
+  }
+
 
 words = ["success",
     "appointment",
@@ -168,16 +233,16 @@ function createGame() {
         cards[bombIndex].color = "black";
 
         var final = cards.concat(cardsfinal);
-        final = shuffle(final);
+        final = shuffleCards(final);
 
         resolve(final);
     });
 }
 
-function shuffle(array) {
+function shuffleCards(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
-    // While there remain elements to shuffle...
+    // While there remain elements to shuffleCards...
     while (0 !== currentIndex) {
 
         // Pick a remaining element...
@@ -198,5 +263,5 @@ function getRandomInt(max) {
 }
 
 module.exports = {
-    createGame
+    createGame, allotTeams
 };

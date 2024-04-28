@@ -10,6 +10,8 @@ import { io, Socket } from 'socket.io-client';
 export class SocketioService {
   socket!: Socket;
 
+  gameAlreadyStarted = false;
+
   constructor() {}
 
   connect(gameId: string | null, mode: string | null) {
@@ -23,6 +25,10 @@ export class SocketioService {
   }
 
   startGame(gameId : string | null) {
+    // if(this.gameAlreadyStarted){
+    //   alert('You cant join room when the game has already started');
+    // }
+    this.gameAlreadyStarted = true;
     this.socket.emit('startGame', { gameId: gameId });
   }
 
@@ -75,6 +81,14 @@ export class SocketioService {
   AssignAnimal() {
     return new Observable((observer) => {
       this.socket.on('assignAnimal', (data) => {
+        observer.next(data);
+      });
+    });
+  }
+
+  allotTeamsandRole(){
+    return new Observable((observer) => {
+      this.socket.on('allotTeams', (data) => {
         observer.next(data);
       });
     });
