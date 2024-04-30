@@ -91,14 +91,16 @@ export class GameComponent implements OnInit {
     navigator.clipboard.writeText(gameId);
 
     this.snackbar.open('Link copied to clipboard', '', {
-      duration: 3000,
+      duration: 2000,
+      panelClass: ['my-snackbar'],
     });
   }
 
   recieveCreateGameAck() {
     this.socketIoService.recieveCreateGameAck().subscribe((message: any) => {
       this.snackbar.open(message, '', {
-        duration: 3000,
+        duration: 2000,
+        panelClass: ['my-snackbar'],
       });
     });
   }
@@ -106,7 +108,8 @@ export class GameComponent implements OnInit {
   recieveJoinedPlayers() {
     this.socketIoService.recieveJoinedPlayers().subscribe((message: any) => {
       this.snackbar.open(message, '', {
-        duration: 3000,
+        duration: 2000,
+        panelClass: ['my-snackbar'],
       });
     });
   }
@@ -184,7 +187,6 @@ export class GameComponent implements OnInit {
 
   allotTeamsandRole() {
     this.socketIoService.allotTeamsandRole().subscribe((data: any) => {
-      console.log('2');
       this.role = data.role;
       this.yourTeam = data.team;
     });
