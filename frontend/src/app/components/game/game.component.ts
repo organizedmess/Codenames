@@ -44,6 +44,7 @@ export class GameComponent implements OnInit {
     this.recieveStartGame();
     this.recieveGameUpdate();
     this.AssignAnimal();
+    this.allotTeamsandRole();
   }
 
   nextGame() {
@@ -184,6 +185,7 @@ export class GameComponent implements OnInit {
     this.socketIoService.allotTeamsandRole().subscribe((data: any) => {
       this.role = data.role;
       this.yourTeam = data.team;
+      // console.log(this.role, this.yourTeam);
     });
   }
 

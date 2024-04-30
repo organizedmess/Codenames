@@ -84,7 +84,6 @@ function allotTeams(clients) {
             }
             else{
                 clients[key].team = "blue";
-
             }
             count++;
         }
@@ -101,6 +100,8 @@ function assignRoles(clients) {
     // Separate the clients into two arrays based on their team
     for (let key in clients) {
       if (clients.hasOwnProperty(key)) {
+        // console.log(key, clients[key]);
+
         if (clients[key].team === 'red') {
           redTeam.push(clients[key]);
         } else if (clients[key].team === 'blue') {

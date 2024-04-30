@@ -28,20 +28,21 @@ const animals = [
     {name: 'pig', icon: '../assets/pig.png'}
 ]
 
-clients = {
-    // socket.id: {animal:, team: }
+class Client {
+    constructor(){
+        this.role = '';
+        this.team = '';
+    }
 };
+
+let clients = [];
 rooms = [];
 io.on('connection', (socket)=>{
     console.log('User connected', socket.id);
-    clients[socket.id] = {animal: '', team: '', role: ''};
+    let newClient = new Client();
+    clients[socket.id] = newClient;
+    my_id = socket.id;
 
-    const animal = animals[Math.floor(Math.random() * animals.length)];
-    animals.splice(animals.indexOf(animal), 1);
-    clients[socket.id].animal = animal;
-
-    socket.emit('assignAnimal', {clients: clients, animal: animal});
-    
     socket.on('startGame', ({gameId})=>{
         if(rooms[gameId] && rooms[gameId].length > 0){
             return io.to(gameId).emit('startGame', rooms[gameId])
@@ -51,8 +52,12 @@ io.on('connection', (socket)=>{
             io.to(gameId).emit('startGame', words);
         });
 
-        clients = allotTeams(clients) 
-        io.to(gameId).emit('allotTeams', clients[socket.id]);
+        clients = allotTeams(clients);
+        for (let clientId in clients) {
+            if (clients.hasOwnProperty(clientId)) {
+                io.to(clientId).emit('allotTeams', clients[clientId]);
+            }
+        }
     });
 
     socket.on('nextGame', ({gameId})=>{
