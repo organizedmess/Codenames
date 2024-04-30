@@ -12,6 +12,7 @@ export class GameComponent implements OnInit {
   gameId: string | null = null;
   mode: string | null = null;
   words: any;
+  isResultCardVisible: boolean = false;
   
   currTeam = 'blue';
   winner: string = '';
@@ -58,6 +59,7 @@ export class GameComponent implements OnInit {
 
     let element = document.querySelector('.ack') as HTMLElement;
     element.style.display = 'none';
+    this.isResultCardVisible = false;
   
     this.socketIoService.nextGame(this.gameId);
   }
@@ -98,10 +100,10 @@ export class GameComponent implements OnInit {
 
   recieveCreateGameAck() {
     this.socketIoService.recieveCreateGameAck().subscribe((message: any) => {
-      this.snackbar.open(message, '', {
-        duration: 2000,
-        panelClass: ['my-snackbar'],
-      });
+      // this.snackbar.open(message, '', {
+      //   duration: 2000,
+      //   panelClass: ['my-snackbar'],
+      // });
     });
   }
 
@@ -149,7 +151,7 @@ export class GameComponent implements OnInit {
           }
           this.winner = this.winner.toUpperCase();
           setTimeout(() => {
-            this.showResultCard(this.winner);
+            this.showResultCard();
           }, 3000);
           return ;
         }
@@ -168,13 +170,14 @@ export class GameComponent implements OnInit {
 
   }
 
-  showResultCard(winner: string) {
+  showResultCard() {
     let gameBoard = document.querySelector('.game') as HTMLElement;
     gameBoard.style.display = 'none';
 
-
     let element = document.querySelector('.ack') as HTMLElement;
     element.style.display = 'block';
+    this.isResultCardVisible = true;
+
     return ;
   }
 

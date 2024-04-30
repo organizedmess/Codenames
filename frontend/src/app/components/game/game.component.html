@@ -1,22 +1,53 @@
-<section [ngClass]="{'wordsExist': words}">
+<section [ngClass]="{'wordsExist': words, 'resultCard': isResultCardVisible}">
   
-  
-  <div class="center scoreboard d-flex flex-column">
+  <div class="scoreboard">
     
-    <div class="bluescore-board bg-primary">
-      <span class="score">Blue: {{ blueScore }}</span>
+    <div class="d-flex">  
+      <div class="bluescore-board text-primary">
+        <span class="score">
+          <b>
+            Blue
+          </b>
+
+          <div class="divider"></div>
+          
+          <span class="score-var">
+            {{ blueScore }}
+          </span>
+        </span>
+      </div>
+      
+      <div class="redscore-board text-danger">
+        <span class="score">
+          <b>
+            Red
+          </b>
+
+          <div class="divider"></div>
+
+          <span class="score-var">
+            {{ redScore }}
+          </span>
+        </span>
+      </div>
     </div>
 
-    <div class="redscore-board bg-danger">
-      <span class="score">Red: {{ redScore }}</span>
-    </div>
-
-    <div class="curr-team">
-      <span class="team" >Current team: {{ currTeam }}</span>
+    <div class="next-game-container">
+      <button mat-raised-button (click)="nextGame()" class="nextgame" *ngIf="words">
+        Next game
+      </button>  
     </div>
 
   </div>
 
+  <div class="misc">
+    
+    <div class="curr-team" *ngIf="words">
+      <span class="team" >Current team: {{ currTeam }}</span>
+    </div>
+
+  </div>
+    
   <div class="ack">
     <div class="flex flex-column">
       <span [ngClass]="winner === 'BLUE' ? 'blueWon' : 'redWon'" >{{ winner }} Team has won the game! </span>
@@ -27,18 +58,18 @@
   </div>
 
   <div class="game">
-    <div class="center" *ngIf="!words">
+    <div class="start-btn" *ngIf="!words">
       <button mat-raised-button (click)="startGame()">Start game</button>
     </div>
 
-    <div class="p-2 d-inline room-info border border-primary" >
-      Game Id:
-      <span>
-        <b>
-          {{ gameId }}
-        </b>
-        <button mat-raised-button (click)="copyToClipboard(gameId)">Copy</button>
-      </span>
+    <div class="d-flex room-info border" >
+      <span class="room-info-txt"> Game Id: {{ gameId }}</span>
+      <button class="bg-transparent border-0 game-info-btn">
+        <svg class="" (click)="copyToClipboard(gameId)" xmlns="http://www.w3.org/2000/svg" width="48" height="48" id="copy">
+          <path fill="none" d="M0 0h48v48H0z"></path>
+          <path fill="rgba(242,242,73,1)" d="M32 2H8C5.79 2 4 3.79 4 6v28h4V6h24V2zm6 8H16c-2.21 0-4 1.79-4 4v28c0 2.21 1.79 4 4 4h22c2.21 0 4-1.79 4-4V14c0-2.21-1.79-4-4-4zm0 32H16V14h22v28z"></path>
+        </svg>
+      </button>
     </div>
 
     <div class="center" *ngIf="words">
@@ -46,8 +77,10 @@
         <span>Your team: {{ yourTeam }}</span>
       </div>
       <mat-button-toggle-group [(value)]="role">
-        <mat-button-toggle value="operative" [disabled]=" role!=='operative'" [ngClass]="{'selected': role === 'operative'}">Operative</mat-button-toggle>
-        <mat-button-toggle value="spymaster" [disabled]=" role!=='spymaster'" [ngClass]="{'selected': role === 'spymaster'}">Spymaster</mat-button-toggle>
+        <!-- <mat-button-toggle value="operative" [disabled]=" role!=='operative'" [ngClass]="{'selected': role === 'operative'}">Operative</mat-button-toggle> -->
+        <!-- <mat-button-toggle value="spymaster" [disabled]=" role!=='spymaster'" [ngClass]="{'selected': role === 'spymaster'}">Spymaster</mat-button-toggle> -->
+        <mat-button-toggle value="operative" [ngClass]="{'selected': role === 'operative'}">Operative</mat-button-toggle>
+        <mat-button-toggle value="spymaster" [ngClass]="{'selected': role === 'spymaster'}">Spymaster</mat-button-toggle>
       </mat-button-toggle-group>
     </div>
 
@@ -80,9 +113,7 @@
         </div>
       </ng-container>
     </div>
-    <button mat-raised-button (click)="nextGame()" class="nextgame" *ngIf="words">
-      Next game
-    </button>
+
   </div>
 
 
