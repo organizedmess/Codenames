@@ -1,20 +1,60 @@
-<div class="d-flex justify-content-around align-items-center">
-  <div class="box">
-    <button mat-raised-button class="btn btn-primary" (click)="joinGame()">Join game</button>  
-    <input matInput placeholder="Game ID" [(ngModel)]="gameId" />
+<div class="m-0 p-0 max-w-full">
+  <header class="p-4 text-center">
+    <img src="../../../assets/logo.png" alt="" />
+  </header>
+  <div class="main-content flex">
+    <div class="img-section mt-9">
+      <img src="../../../assets/agent_male.png" alt="Left Image" />
+    </div>
+    <main>
+      <div
+        class="center-section flex flex-column justify-content-between p-4 pb-0 h-full text-center"
+      >
+        <div class="flex flex-column">
+          <p class="text-3xl text-white text-shadow mt-2">
+            Play with your friends...
+          </p>
+          <div class="pb-2 flex justify-content-center align-content-center">
+            <input
+              class="mr-3 p-2 w-8 border-round-lg border-none"
+              matInput
+              placeholder="Game ID"
+              [(ngModel)]="gameId"
+            />
+            <button
+              class="btn btn-primary border-round-lg"
+              (click)="joinGame()"
+            >
+              Join game
+            </button>
+          </div>
+          <button
+            class="create-room-btn text-base mt-3 border-none border-round-2xl w-8 cursor-pointer text-2xl"
+            (click)="createGame()"
+          >
+            Create game
+          </button>
+        </div>
+        <div class="rules-section p-5 mt-6">
+          <p class="rules font-bold text-2xl text-purple">How to play...</p>
+          <ul class="rules-list mt-3 pl-0 text-left">
+            <li>1. Click on the CREATE ROOM button.</li>
+            <li>2. Select the preferred game settings and start the game.</li>
+            <li>
+              3. Connect with your friends using your favorite audio or video
+              chat.
+            </li>
+            <li>4. Share the room URL with your friends.</li>
+            <li>5. Enjoy the game!</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+    <div class="img-section mt-9">
+      <img src="../../../assets/agent_female.png" alt="Right Image" />
+    </div>
   </div>
-  <div class="box">
-    <button mat-raised-button (click)="createGame()">Create game</button>
-  </div>
+  <footer class="p-4 text-center">
+    <p>Footer details go here...</p>
+  </footer>
 </div>
-
-
-<footer>
-  <div class="container">
-      <div class="row">
-      <div class="col-md-12">
-          <p>© 2018 - Angular 6 CRUD Application</p>
-      </div>
-      </div>
-  </div>
-</footer>

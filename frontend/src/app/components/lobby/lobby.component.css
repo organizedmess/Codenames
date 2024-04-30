@@ -1,18 +1,65 @@
-.box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+@import "primeflex/primeflex.scss";
+
+header {
+  background-image: radial-gradient(at top, #ffff4d, #643281);
 }
 
-footer{
-  position: fixed;
-  bottom: 0;
+header img {
+  width: 30%;
+}
+
+.main-content {
+  background-color: #b07ecd;
+}
+
+.img-section {
+  margin-top: 100px;
+}
+
+.img-section img {
   width: 100%;
-  background-color: #f8f9fa;
-  padding: 10px 0;
-  text-align: center;
-  font-size: 12px;
-  color: #6c757d;
-  border-top: 1px solid #e9ecef;
-  z-index: 1000;
+  height: 100%;
+}
+
+.create-room-btn {
+  margin: 0 auto;
+  padding: 10px;
+  background-color: #fef9c2;
+  transition: background-color 0.3s;
+}
+
+.create-room-btn:hover {
+  background-color: #fdf382;
+}
+
+.rules-section {
+  border-radius: 7px 7px 0 0;
+  background-color: rgb(253 227 156);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.rules {
+  text-align: left;
+  color: rgb(136 18 71);
+}
+
+.rules-list {
+  list-style: none;
+  color: #333;
+}
+
+.rules-list li {
+  margin-bottom: 10px;
+  list-style-type: none;
+}
+
+.rules-list li:before {
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+footer {
+  background-color: beige;
 }
