@@ -113,7 +113,6 @@ export class GameComponent implements OnInit {
 
   recieveStartGame() {
     this.socketIoService.recieveStartGame().subscribe((words) => {
-      this.role = 'operative';
       this.words = words;
     });
   }
@@ -146,7 +145,9 @@ export class GameComponent implements OnInit {
             this.winner = 'red';
           }
           this.winner = this.winner.toUpperCase();
-          this.showResultCard(this.winner);
+          setTimeout(() => {
+            this.showResultCard(this.winner);
+          }, 3000);
           return ;
         }
       }
@@ -183,9 +184,9 @@ export class GameComponent implements OnInit {
 
   allotTeamsandRole() {
     this.socketIoService.allotTeamsandRole().subscribe((data: any) => {
+      console.log('2');
       this.role = data.role;
       this.yourTeam = data.team;
-      // console.log(this.role, this.yourTeam);
     });
   }
 

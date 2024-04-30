@@ -66,8 +66,11 @@ io.on('connection', (socket)=>{
             io.to(gameId).emit('startGame', words);
         });
         clients = allotTeams(clients) 
-        console.log(clients[socket.id]);
-        io.to(gameId).emit('allotTeams', clients[socket.id]);
+        for (let clientId in clients) {
+            if (clients.hasOwnProperty(clientId)) {
+                io.to(clientId).emit('allotTeams', clients[clientId]);
+            }
+        }
     });
 
     socket.on('creategame', ({gameId})=>{
