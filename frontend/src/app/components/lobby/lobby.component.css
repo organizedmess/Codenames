@@ -1,5 +1,4 @@
 @import "primeflex/primeflex.scss";
-
 /* header {
   background-image: radial-gradient(at top, #ffff4d, #643281);
 } */
@@ -14,10 +13,6 @@
 }
 header img {
   width: 30%;
-}
-
-.main-content {
-  /* background-color: #b07ecd; */
 }
 
 .img-section {
