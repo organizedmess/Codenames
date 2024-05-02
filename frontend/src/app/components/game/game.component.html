@@ -72,9 +72,15 @@
       </button>
     </div>
 
-    <div *ngIf="!words" class="d-flex justify-content-center m-5">
+    <div *ngIf="!words && !Called" class="d-flex justify-content-center m-5">
       <span class="wordAlt">
         Share the Game Id with your friends to join the game room. 
+      </span>
+    </div>
+
+    <div *ngIf="!words && Called" class="d-flex justify-content-center m-5">
+      <span class="wordAlt">
+        Loading...
       </span>
     </div>
 

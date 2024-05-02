@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { ObserversModule } from '@angular/cdk/observers';
 import { io, Socket } from 'socket.io-client';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,9 @@ export class SocketioService {
 
   gameAlreadyStarted = false;
 
-  constructor() {}
+  constructor(
+    private router: Router
+  ) {}
 
   connect(gameId: string | null, mode: string | null) {
     if(!gameId || !mode) return;
@@ -27,6 +30,8 @@ export class SocketioService {
   startGame(gameId : string | null) {
     if(this.gameAlreadyStarted){
       alert('You cant join room when the game has already started');
+      // this.router.navigate(['/']);
+      // return ;
     }
     this.socket.emit('startGame', { gameId: gameId });
   }

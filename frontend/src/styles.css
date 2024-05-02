@@ -9,7 +9,17 @@ body {
 }
 
 .my-snackbar {
-  
-  background-color: white ;
-  color: black ;
+  position: absolute !important;
+  top: 50 !important;
+  left: 50 !important;
+  z-index: 100 !important;
+  color: black !important;
+}
+.mat-mdc-snack-bar-container{
+  background: none;
+}
+.mat-mdc-snack-bar-container .mdc-snackbar__label,
+.mat-mdc-snack-bar-container .mdc-snackbar__surface  {
+  color: white !important;
+  background-color: #B1ACEF !important;
 }

@@ -13,6 +13,7 @@ export class GameComponent implements OnInit {
   gameId: string | null = null;
   mode: string | null = null;
   words: any;
+  Called = false;
   isResultCardVisible: boolean = false;
   
   currTeam = 'blue';
@@ -60,6 +61,8 @@ export class GameComponent implements OnInit {
     this.redScore = 0;
     this.winner = '';
     this.currTeam = 'blue';
+    this.Called = true;
+    this.words = null;
 
     let gameBoard = document.querySelector('.game') as HTMLElement;
     gameBoard.style.display = 'block';
@@ -72,6 +75,7 @@ export class GameComponent implements OnInit {
   }
 
   startGame() {
+    this.Called = true;
     this.socketIoService.startGame(this.gameId);
   }
   wordsCame(){
@@ -128,6 +132,7 @@ export class GameComponent implements OnInit {
 
   recieveJoinedPlayers() {
     this.socketIoService.recieveJoinedPlayers().subscribe((message: any) => {
+      this.Called = false;
       this.snackbar.open(message, '', {
         duration: 2000,
         panelClass: ['my-snackbar'],
@@ -138,9 +143,10 @@ export class GameComponent implements OnInit {
   recieveStartGame() {
    this.socketIoService.recieveStartGame().subscribe((words) => {
       this.words = words;
+      this.Called = false;
       this.snackbar.open('The Game has Started !!', '', {
         duration: 2000,
-        // panelClass: ['my-snackbar'], 
+        panelClass: ['my-snackbar'], 
       });
     });
   }
