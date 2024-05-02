@@ -38,7 +38,7 @@ class Client {
 let clients = [];
 rooms = [];
 io.on('connection', (socket)=>{
-    console.log('User connected', socket.id);
+    // console.log('User connected', socket.id);
     let newClient = new Client();
     clients[socket.id] = newClient;
     my_id = socket.id;
@@ -93,7 +93,7 @@ io.on('connection', (socket)=>{
     });
 
     socket.on('disconnect', () => {
-        console.log('User disconnected', socket.id);
+        // console.log('User disconnected', socket.id);
         const animal = clients[socket.id];
         animals.push(animal);
         delete clients[socket.id];

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SocketioService } from '../../services/socketio.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./game.component.css'],
 })
 export class GameComponent implements OnInit {
+
   gameId: string | null = null;
   mode: string | null = null;
   words: any;
@@ -25,10 +26,12 @@ export class GameComponent implements OnInit {
   role = 'operative';
   yourTeam: any;
 
+  wordArray: NodeListOf<HTMLElement> | undefined;
+
   constructor(
     private socketIoService: SocketioService,
     private route: ActivatedRoute,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
@@ -36,6 +39,8 @@ export class GameComponent implements OnInit {
     this.gameId = this.route.snapshot.paramMap.get('id');
     this.mode = this.route.snapshot.paramMap.get('mode');
     this.socketIoService.connect(this.gameId, this.mode);
+    this.role = 'operative';
+
 
     if(this.mode === 'join-game')
       this.joinGame();
@@ -47,6 +52,8 @@ export class GameComponent implements OnInit {
     this.AssignAnimal();
     this.allotTeamsandRole();
   }
+
+
 
   nextGame() {
     this.blueScore = 0;
@@ -66,6 +73,18 @@ export class GameComponent implements OnInit {
 
   startGame() {
     this.socketIoService.startGame(this.gameId);
+  }
+  wordsCame(){
+    this.wordArray = document.querySelectorAll('.word') as NodeListOf<HTMLElement>;
+    console.log(this.wordArray)
+    this.scrollTo();
+  }
+  scrollTo() {
+    this.wordArray = document.querySelectorAll('.word') as NodeListOf<HTMLElement>;
+    if (this.wordArray) {
+      let middleWord = this.wordArray[Math.floor(this.wordArray.length / 2)] as HTMLElement;
+      middleWord.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   joinGame(){
@@ -100,10 +119,10 @@ export class GameComponent implements OnInit {
 
   recieveCreateGameAck() {
     this.socketIoService.recieveCreateGameAck().subscribe((message: any) => {
-      // this.snackbar.open(message, '', {
-      //   duration: 2000,
-      //   panelClass: ['my-snackbar'],
-      // });
+      this.snackbar.open(message, '', {
+        duration: 2000,
+        panelClass: ['my-snackbar'],
+      });
     });
   }
 
@@ -117,8 +136,12 @@ export class GameComponent implements OnInit {
   }
 
   recieveStartGame() {
-    this.socketIoService.recieveStartGame().subscribe((words) => {
+   this.socketIoService.recieveStartGame().subscribe((words) => {
       this.words = words;
+      this.snackbar.open('The Game has Started !!', '', {
+        duration: 2000,
+        // panelClass: ['my-snackbar'], 
+      });
     });
   }
 
@@ -194,5 +217,6 @@ export class GameComponent implements OnInit {
       this.yourTeam = data.team;
     });
   }
+
 
 }
